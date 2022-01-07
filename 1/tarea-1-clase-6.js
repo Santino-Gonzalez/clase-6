@@ -5,6 +5,8 @@ Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad
 Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
 */
 
+
+
 function createNewMember(amount){
     const $div = document.createElement("div")
     $div.className = "member"
@@ -12,15 +14,18 @@ function createNewMember(amount){
     const $label = document.createElement("label")
     $label.textContent = "Ingrese la edad del familiar Nº" + (amount + 1) + ":"
     const $input = document.createElement("input")
-    $input.className = "edad"
+    $input.className = "age"
     $input.type = "number"
     $input.placeholder = "Edad del familiar"
     let $listOfMembers = document.querySelector("#list-Of-Members")
 
     $div.appendChild($label)
     $div.appendChild($input)
+    $div.appendChild($divButtonAdd)
+    $div.appendChild($divButtonRemove)
     $listOfMembers.appendChild($div)
 }
+
 
 function createNewMember2(numberOfMembers){
     for(let i=0; i < numberOfMembers; i++){
@@ -35,10 +40,11 @@ document.querySelector("#button-Next").onclick = function(){
     return false
 }
 
+
 const allRelatives = document.querySelectorAll("p")
 
 function convertMembersToArray(){
-    let $members = document.querySelectorAll(".edad")
+    let $members = document.querySelectorAll(".age")
     let array = []
     for(let i = 0; i < $members.length; i++){
         array.push(Number($members[i].value))
