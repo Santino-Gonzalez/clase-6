@@ -110,9 +110,16 @@ Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como
 */
 
 document.querySelector("#add-salaries").onclick = function(){
-    const $salaries = `<input id="input-salaries" placeholder="Salario del familiar" ></input>`
     const $inputs = document.querySelectorAll(".age")
-    $inputs.insertAdjacentHTML("afterend", $salaries)
+    const $salaryList = document.querySelector("#list-salary")
+    for(let i = 0; i < $inputs.length; i++){
+       
+        const $input = document.createElement("input")
+        $input.id = "input-salaries"
+        $input.placeholder = "Salario del familiar"
+        $salaryList.appendChild($input)
+    }
+   
 }
 
 
