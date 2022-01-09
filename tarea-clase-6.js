@@ -4,16 +4,16 @@ Crear tantos inputs+labels como gente haya para completar la edad de cada integr
 Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad, la menor edad y el promedio del grupo familiar
 Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
 */
-
-
+let $div 
+let $input
 
 function createNewMember(amount){
-    const $div = document.createElement("div")
+    $div = document.createElement("div")
     $div.className = "member"
 
     const $label = document.createElement("label")
     $label.textContent = "Ingrese la edad del familiar Nº" + (amount + 1) + ":"
-    const $input = document.createElement("input")
+    $input = document.createElement("input")
     $input.className = "age"
     $input.type = "number"
     $input.placeholder = "Edad del familiar"
@@ -21,11 +21,8 @@ function createNewMember(amount){
 
     $div.appendChild($label)
     $div.appendChild($input)
-    $div.appendChild($divButtonAdd)
-    $div.appendChild($divButtonRemove)
     $listOfMembers.appendChild($div)
 }
-
 
 function createNewMember2(numberOfMembers){
     for(let i=0; i < numberOfMembers; i++){
@@ -39,7 +36,6 @@ document.querySelector("#button-Next").onclick = function(){
     createNewMember2(numberOfMembers)
     return false
 }
-
 
 const allRelatives = document.querySelectorAll("p")
 
@@ -112,3 +108,11 @@ Al hacer click en "calcular", mostrar en un elemento pre-existente el mayor sala
 
 Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como 0).
 */
+
+document.querySelector("#add-salaries").onclick = function(){
+    const $salaries = `<input id="input-salaries" placeholder="Salario del familiar" ></input>`
+    const $inputs = document.querySelectorAll(".age")
+    $inputs.insertAdjacentHTML("afterend", $salaries)
+}
+
+
