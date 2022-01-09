@@ -31,9 +31,13 @@ function createNewMember2(numberOfMembers){
 }
 
 document.querySelector("#button-Next").onclick = function(){
-    const $numberOfMembers = document.querySelector("#number-Of-Members")
-    const numberOfMembers = $numberOfMembers.value
-    createNewMember2(numberOfMembers)
+    const $numberOfMembers = document.querySelector("#number-Of-Members").value
+    createNewMember2($numberOfMembers)
+    document.querySelector("#button-Next").disabled = true
+    document.querySelector("#add-salaries").disabled = false
+    if ($numberOfMembers <= 0){
+        document.querySelector("#button-Next").disabled = false
+    }
     return false
 }
 
@@ -77,7 +81,7 @@ function calculateOlder(array){
     return older
 }
 
-document.querySelector("#button-Calculate").onclick = function(){
+document.querySelector("#button-calculate").onclick = function(){
     const arrayOfMembers = convertMembersToArray()
     const youngerAge = calculateYoungerAge(arrayOfMembers)
     const averageFamily = calculateAverageOfFamily(arrayOfMembers)
@@ -86,16 +90,39 @@ document.querySelector("#button-Calculate").onclick = function(){
     document.querySelector("#average-family").textContent = `El promedio del grupo familiar es de ${averageFamily} años`
     document.querySelector("#younger-age").textContent = `La edad mas baja de la familia es de ${youngerAge} años`
     document.querySelector("#older").textContent = `La edad mas alta de la familia es de ${older} años`
+
+    const $salaries = document.getElementsByClassName("input-salaries")
+    const arrayOfWages = convertWagesToArray($salaries)
+    const lowerWage = calculateLowerSalary(arrayOfWages)
+    const higherSalary = calculateHigherSalary(arrayOfWages)
+    const averageSalary = calculateAverageSalary(arrayOfWages)
+    const averageMonthlySalary = calculateAverageMonthlySalary(arrayOfWages)
+
+    const $emLowerWage = document.querySelector("#lower-wage")
+    const $emHigherSalary = document.querySelector("#higher-salary")
+    const $emAverageSalary = document.querySelector("#average-salary")
+    const $emAverageMonthlySalary = document.querySelector("#average-monthly-salary")
+
+    $emAverageMonthlySalary.textContent = `El salario mensual promedio de la familia es de $${averageMonthlySalary}`
+    $emLowerWage.textContent = `El salario mas bajo de la familia es de $${lowerWage}`
+    $emHigherSalary.textContent = `El salario mas alto de la familia es de $${higherSalary}`
+    $emAverageSalary.textContent = `El salario promedio de la familia es de $${averageSalary}`
 }
 
 document.querySelector("#reset").onclick = function(){
     let $members = document.querySelectorAll(".member")
+    const $label = document.querySelectorAll(".salaries")
     for (let i = 0; i < $members.length; i++) {
         $members[i].remove();
+    }
+    for (let i = 0; i < $label.length; i++) {
+        $label[i].remove();
     }
     document.querySelector("#average-family").textContent = ""
     document.querySelector("#younger-age").textContent = ""
     document.querySelector("#older").textContent = ""
+    document.querySelector("#add-salaries").disabled = false
+    document.querySelector("#button-Next").disabled = false
 }
 
 
@@ -110,9 +137,79 @@ Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como
 */
 
 document.querySelector("#add-salaries").onclick = function(){
-    const $salaries = `<input id="input-salaries" placeholder="Salario del familiar" ></input>`
     const $inputs = document.querySelectorAll(".age")
-    $inputs.insertAdjacentHTML("afterend", $salaries)
+    const $salaryList = document.querySelector("#list-salaries")
+
+    for(let i = 0; i < $inputs.length; i++){
+        const $input = document.createElement("input")
+        const $p = document.createElement("p")
+        const $label = document.createElement("label")
+        $label.textContent = `Salario del familiar Nº${i + 1}`
+        $input.className = "input-salaries"
+        $input.placeholder = "Salario del familiar"
+        $input.type = "number"
+        $label.className = "label-salaries"
+        $label.appendChild($input)
+        $p.appendChild($label)
+        $salaryList.appendChild($p)
+    }
+    document.querySelector("#add-salaries").disabled = true
 }
 
+document.querySelector("#remove-salaries").onclick = function(){
+    const $salaries = document.querySelectorAll(".salaries")
+    for (let i = 0; i < $salaries.length; i++) {
+        $salaries[i].remove();
+    }
+    document.querySelector("#add-salaries").disabled = false
+}
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function convertWagesToArray(listOfWages){
+    let array = []
+    for(let i = 0; i < listOfWages.length; i++){
+        if(listOfWages[i].value != 0){
+            array.push(Number(listOfWages[i].value))
+        }
+    }
+    return array
+}
+
+function calculateLowerSalary(array){
+    let lowWage = array[0]
+    for(let i = 0; i < array.length; i++){
+        if(array[i] < lowWage){
+            lowWage = array[i]
+        }
+    }
+    return lowWage
+}
+
+function calculateHigherSalary(array){
+    let highSalary = array[0]
+    for(let i = 0; i < array.length; i++){
+        if(array[i] > highSalary){
+            highSalary = array[i]
+        }
+    }
+    return highSalary
+}
+
+function calculateAverageSalary(array){
+    let average = 0
+    for(let i = 0; i < array.length; i++){
+        average = average + Number(array[i])
+    }
+    average = average / array.length
+    return average
+}
+
+function calculateAverageMonthlySalary(array){
+    let average = 0
+    for(let i = 0; i < array.length; i++){
+        average = average + (Number(array[i]) / 12)
+    }
+    average = average / array.length
+    return average
+}

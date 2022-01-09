@@ -8,23 +8,50 @@
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
 </head>
 <body>
-    <form>
-    <input type="number" id="number-Of-Members" placeholder="Cantidad de familiares">
-    <button id="button-Next">Siguiente</button>
-    </form>
-    <p id="list-Of-Members">
+    <div>
+        <form>
+            <input type="number" id="number-Of-Members" placeholder="Cantidad de familiares">
+            <button id="button-Next">Siguiente</button>
+        </form>
+    </div>
+    
+    <div id="inputs-ages">
+    <p id="list-Of-Members"></p>
+    </div>
 
-    </p>
+    <div id="list-salaries">
 
-    <p id="average-family"></p>
+    </div>
 
-    <p id="younger-age"></p>
+    <div id="results">
+        <p id="average-family"></p>
 
-    <p id="older"></p>
+        <p id="younger-age"></p>
+    
+        <p id="older"></p>
+    </div>
 
-    <button id="button-Calculate">Calcular</button>
-    <button id="reset">Resetear</button>
-    <button id="add-salaries">Agregar Sueldos</button>
+    <div>
+        <p>
+            <em id="lower-wage"></em>
+        </p>
+        <p>
+            <em id="higher-salary"></em>
+        </p>
+        <p>
+            <em id="average-salary"></em>
+        </p>
+        <p>
+            <em id="average-monthly-salary"></em>
+        </p>
+    </div>
+
+    <div id="buttons">
+        <button id="button-calculate">Calcular</button>
+        <button id="reset">Resetear</button>
+        <button id="add-salaries">Agregar Sueldos</button>
+        <button id="remove-salaries">Quitar Sueldos</button>
+    </div>  
     <script src='tarea-clase-6.js'></script>
 </body>
 </html>
