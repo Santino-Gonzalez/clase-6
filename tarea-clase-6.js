@@ -4,16 +4,14 @@ Crear tantos inputs+labels como gente haya para completar la edad de cada integr
 Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad, la menor edad y el promedio del grupo familiar
 Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
 */
-let $div 
-let $input
 
 function createNewMember(amount){
-    $div = document.createElement("div")
+    const $div = document.createElement("div")
     $div.className = "member"
 
     const $label = document.createElement("label")
     $label.textContent = "Ingrese la edad del familiar Nº" + (amount + 1) + ":"
-    $input = document.createElement("input")
+    const $input = document.createElement("input")
     $input.className = "age"
     $input.type = "number"
     $input.placeholder = "Edad del familiar"
@@ -24,7 +22,7 @@ function createNewMember(amount){
     $listOfMembers.appendChild($div)
 }
 
-function createNewMember2(numberOfMembers){
+function createNewMembers(numberOfMembers){
     for(let i=0; i < numberOfMembers; i++){
         createNewMember(i)
     }
@@ -32,11 +30,21 @@ function createNewMember2(numberOfMembers){
 
 document.querySelector("#button-Next").onclick = function(){
     const $numberOfMembers = document.querySelector("#number-Of-Members").value
-    createNewMember2($numberOfMembers)
+    const $buttonSalaryAdd = document.querySelector("#add-salaries")
+    const $buttonSalaryRemove = document.querySelector("#remove-salaries")
+    const $buttonCalculate = document.querySelector("#button-calculate")
+    const $buttonReset = document.querySelector("#reset")
+    createNewMembers($numberOfMembers)
     document.querySelector("#button-Next").disabled = true
     document.querySelector("#add-salaries").disabled = false
     if ($numberOfMembers <= 0){
         document.querySelector("#button-Next").disabled = false
+    }
+    if ($numberOfMembers > 0){
+        $buttonSalaryAdd.className = ""
+        $buttonSalaryRemove.className = ""
+        $buttonCalculate.className = ""
+        $buttonReset.className = ""
     }
     return false
 }
@@ -91,38 +99,63 @@ document.querySelector("#button-calculate").onclick = function(){
     document.querySelector("#younger-age").textContent = `La edad mas baja de la familia es de ${youngerAge} años`
     document.querySelector("#older").textContent = `La edad mas alta de la familia es de ${older} años`
 
-    const $salaries = document.getElementsByClassName("input-salaries")
-    const arrayOfWages = convertWagesToArray($salaries)
-    const lowerWage = calculateLowerSalary(arrayOfWages)
-    const higherSalary = calculateHigherSalary(arrayOfWages)
-    const averageSalary = calculateAverageSalary(arrayOfWages)
-    const averageMonthlySalary = calculateAverageMonthlySalary(arrayOfWages)
+    const $salariesInputs = document.getElementsByClassName("input-salaries")
 
-    const $emLowerWage = document.querySelector("#lower-wage")
-    const $emHigherSalary = document.querySelector("#higher-salary")
-    const $emAverageSalary = document.querySelector("#average-salary")
-    const $emAverageMonthlySalary = document.querySelector("#average-monthly-salary")
+    if($salariesInputs.length > 0){
+        const $salaries = document.getElementsByClassName("input-salaries")
+        const arrayOfWages = convertWagesToArray($salaries)
+        const lowerWage = calculateLowerSalary(arrayOfWages)
+        const higherSalary = calculateHigherSalary(arrayOfWages)
+        const averageSalary = calculateAverageSalary(arrayOfWages)
+        const averageMonthlySalary = calculateAverageMonthlySalary(arrayOfWages)
 
-    $emAverageMonthlySalary.textContent = `El salario mensual promedio de la familia es de $${averageMonthlySalary}`
-    $emLowerWage.textContent = `El salario mas bajo de la familia es de $${lowerWage}`
-    $emHigherSalary.textContent = `El salario mas alto de la familia es de $${higherSalary}`
-    $emAverageSalary.textContent = `El salario promedio de la familia es de $${averageSalary}`
+        const $emLowerWage = document.querySelector("#lower-wage")
+        const $emHigherSalary = document.querySelector("#higher-salary")
+        const $emAverageSalary = document.querySelector("#average-salary")
+        const $emAverageMonthlySalary = document.querySelector("#average-monthly-salary")
+
+        $emAverageMonthlySalary.textContent = `El salario mensual promedio de la familia es de $${averageMonthlySalary}`
+        $emLowerWage.textContent = `El salario mas bajo de la familia es de $${lowerWage}`
+        $emHigherSalary.textContent = `El salario mas alto de la familia es de $${higherSalary}`
+        $emAverageSalary.textContent = `El salario promedio de la familia es de $${averageSalary}`
+    }
 }
 
 document.querySelector("#reset").onclick = function(){
     let $members = document.querySelectorAll(".member")
-    const $label = document.querySelectorAll(".salaries")
+    const $label = document.querySelectorAll(".label-salaries")
+
     for (let i = 0; i < $members.length; i++) {
         $members[i].remove();
     }
+
     for (let i = 0; i < $label.length; i++) {
         $label[i].remove();
     }
+
     document.querySelector("#average-family").textContent = ""
     document.querySelector("#younger-age").textContent = ""
     document.querySelector("#older").textContent = ""
+
+    document.querySelector("#lower-wage").textContent = ""
+    document.querySelector("#higher-salary").textContent = ""
+    document.querySelector("#average-salary").textContent = ""
+    document.querySelector("#average-monthly-salary").textContent = ""
+
     document.querySelector("#add-salaries").disabled = false
     document.querySelector("#button-Next").disabled = false
+    
+    const $buttonSalaryAdd = document.querySelector("#add-salaries")
+    const $buttonSalaryRemove = document.querySelector("#remove-salaries")
+    const $buttonCalculate = document.querySelector("#button-calculate")
+    const $buttonReset = document.querySelector("#reset")
+
+    $buttonSalaryAdd.className = "hidden"
+    $buttonSalaryRemove.className = "hidden"
+    $buttonCalculate.className = "hidden"
+    $buttonReset.className = "hidden"
+
+    document.querySelector("#number-Of-Members").value = ""
 }
 
 
@@ -157,14 +190,16 @@ document.querySelector("#add-salaries").onclick = function(){
 }
 
 document.querySelector("#remove-salaries").onclick = function(){
-    const $salaries = document.querySelectorAll(".salaries")
+    const $salaries = document.querySelectorAll(".input-salaries")
+    const $label = document.querySelectorAll(".label-salaries")
     for (let i = 0; i < $salaries.length; i++) {
         $salaries[i].remove();
     }
+    for (let i = 0; i < $label.length; i++) {
+        $label[i].remove();
+    }
     document.querySelector("#add-salaries").disabled = false
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function convertWagesToArray(listOfWages){
     let array = []
