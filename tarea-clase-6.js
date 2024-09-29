@@ -9,32 +9,67 @@ Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuev
 let cantidadIntegrantes = document.querySelector("#cantidadIntegrantes");
 let formEdades = document.querySelector("#inputsEdades");
 
-document.querySelector("#botonSiguiente").onclick = function(){
+document.querySelector("#botonSiguiente").onclick = function () {
     
-    let label = document.createElement("label");
-    let br = document.createElement("br");
-    let br2 = document.createElement("br");
-    let botonCalcular = document.createElement("button");
-
-    botonCalcular.textContent = "Calcular";
-    label.innerHTML = "Ingrese la edad de sus familiares:";
-    
-    formEdades.appendChild(label);
-    formEdades.appendChild(br);
-    formEdades.appendChild(br2);
-    
-    for (let i = 0; i < cantidadIntegrantes.value; i++) {
+    if (cantidadIntegrantes.value > 0) {
+        
+        document.querySelector("#botonSiguiente").style.display = "none";
+        cantidadIntegrantes.disabled = true;
+        
+        let label = document.createElement("label");
         let br = document.createElement("br");
         let br2 = document.createElement("br");
-        let input = document.createElement("input");
-        input.placeholder = `Edad del familiar Nº${i+1}`;
-        formEdades.appendChild(input);
+        let botonCalcular = document.createElement("button");
+        let botonReset = document.createElement("button");
+
+        botonReset.id = "botonReset";
+        botonReset.textContent = "Resetear";
+        botonCalcular.textContent = "Calcular";
+        label.innerHTML = "Ingrese la edad de sus familiares:";
+        label.id = "labelEdad";
+        
+        formEdades.appendChild(label);
         formEdades.appendChild(br);
         formEdades.appendChild(br2);
-    }
+        
+        for (let i = 0; i < cantidadIntegrantes.value; i++) {
+            let br = document.createElement("br");
+            let br2 = document.createElement("br");
+            let input = document.createElement("input");
+            input.placeholder = `Edad del familiar Nº${i + 1}`;
+            input.id = `edadIntegrante${i+1}`;
+            formEdades.appendChild(input);
+            formEdades.appendChild(br);
+            formEdades.appendChild(br2);
+        }
+        
+        formEdades.appendChild(botonCalcular);
+        formEdades.appendChild(botonReset);
 
-    formEdades.appendChild(botonCalcular);
-    
+        document.querySelector("#botonReset").onclick = function(){
+
+            label.remove();
+            botonCalcular.remove();
+            botonReset.remove();
+
+            for (let i = 0; i < cantidadIntegrantes.value; i++) {
+                let input = document.getElementById(`edadIntegrante${i+1}`);
+                input.remove();
+            }
+
+            while (document.getElementById("inputsEdades").childNodes.length != 0) {
+                document.getElementById("inputsEdades").removeChild(document.getElementById("inputsEdades").firstChild);
+            }
+
+            document.querySelector("#botonSiguiente").style.display = "";
+            cantidadIntegrantes.disabled = false;
+
+            return false;
+        }
+        
+    }else{
+        alert("La cantidad de integrantes de su familia debe ser de al menos 1.");
+    }
     return false;
 }
 
