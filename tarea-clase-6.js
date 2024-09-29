@@ -6,9 +6,37 @@ Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad
 Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
 */
 
+let cantidadIntegrantes = document.querySelector("#cantidadIntegrantes");
+let formEdades = document.querySelector("#inputsEdades");
 
+document.querySelector("#botonSiguiente").onclick = function(){
+    
+    let label = document.createElement("label");
+    let br = document.createElement("br");
+    let br2 = document.createElement("br");
+    let botonCalcular = document.createElement("button");
 
+    botonCalcular.textContent = "Calcular";
+    label.innerHTML = "Ingrese la edad de sus familiares:";
+    
+    formEdades.appendChild(label);
+    formEdades.appendChild(br);
+    formEdades.appendChild(br2);
+    
+    for (let i = 0; i < cantidadIntegrantes.value; i++) {
+        let br = document.createElement("br");
+        let br2 = document.createElement("br");
+        let input = document.createElement("input");
+        input.placeholder = `Edad del familiar Nº${i+1}`;
+        formEdades.appendChild(input);
+        formEdades.appendChild(br);
+        formEdades.appendChild(br2);
+    }
 
+    formEdades.appendChild(botonCalcular);
+    
+    return false;
+}
 
 /*
 TAREA:
