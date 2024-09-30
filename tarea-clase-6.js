@@ -6,8 +6,47 @@ Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad
 Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
 */
 
+function calcularMayorEdad (edades){
+    let maximo = 0;
+
+    for (let i = 0; i < edades.length; i++) {
+        if (maximo == 0) {
+            maximo = edades[i];
+        } else if (edades[i] > maximo) {
+            maximo = edades[i];
+        }
+    }
+
+    return maximo;
+}
+
+function calcularMenorEdad (edades){
+    let minimo = 0;
+
+    for (let i = 0; i < edades.length; i++) {
+        if (minimo == 0) {
+            minimo = edades[i];
+        } else if (edades[i] < minimo) {
+            minimo = edades[i];
+        }
+    }
+
+    return minimo;
+}
+
+function calcularEdadPromedio (edades){
+    let suma = 0;
+
+    for (let i = 0; i < edades.length; i++) {
+        suma = suma + edades[i];
+    }
+
+    return suma / edades.length;
+}
+
 let cantidadIntegrantes = document.querySelector("#cantidadIntegrantes");
-let formEdades = document.querySelector("#inputsEdades");
+let formEdades = document.querySelector("#formEdades");
+let resultado = document.querySelector("#resultados");
 
 document.querySelector("#botonSiguiente").onclick = function () {
     
@@ -25,6 +64,7 @@ document.querySelector("#botonSiguiente").onclick = function () {
         botonReset.id = "botonReset";
         botonReset.textContent = "Resetear";
         botonCalcular.textContent = "Calcular";
+        botonCalcular.id = "botonCalcular";
         label.innerHTML = "Ingrese la edad de sus familiares:";
         label.id = "labelEdad";
         
@@ -38,6 +78,7 @@ document.querySelector("#botonSiguiente").onclick = function () {
             let input = document.createElement("input");
             input.placeholder = `Edad del familiar Nº${i + 1}`;
             input.id = `edadIntegrante${i+1}`;
+            input.className = "edades"
             formEdades.appendChild(input);
             formEdades.appendChild(br);
             formEdades.appendChild(br2);
@@ -45,20 +86,42 @@ document.querySelector("#botonSiguiente").onclick = function () {
         
         formEdades.appendChild(botonCalcular);
         formEdades.appendChild(botonReset);
+        
+        document.querySelector("#botonCalcular").onclick = function () {
+        
+            let edades = document.querySelectorAll(".edades");
+            let arrayEdades = [];
+        
+            for (let i = 0; i < edades.length; i++) {
+                arrayEdades.push(Number(edades[i].value));
+            }
 
+            for (let i = 0; i < edades.length; i++) {
+                edades[i].disabled = true;
+            }
+        
+            resultado.textContent = `La persona mas mayor de tu familia tiene ${calcularMayorEdad(arrayEdades)} años, 
+            la menor tiene ${calcularMenorEdad(arrayEdades)} años y el promedio de edad de la familia es de ${calcularEdadPromedio(arrayEdades)} años.`;    
+        
+            botonCalcular.remove();
+
+            return false;
+        }
+        
         document.querySelector("#botonReset").onclick = function(){
 
             label.remove();
             botonCalcular.remove();
             botonReset.remove();
+            resultado.textContent = "";
 
             for (let i = 0; i < cantidadIntegrantes.value; i++) {
                 let input = document.getElementById(`edadIntegrante${i+1}`);
                 input.remove();
             }
 
-            while (document.getElementById("inputsEdades").childNodes.length != 0) {
-                document.getElementById("inputsEdades").removeChild(document.getElementById("inputsEdades").firstChild);
+            while (document.getElementById("formEdades").childNodes.length != 0) {
+                document.getElementById("formEdades").removeChild(document.getElementById("formEdades").firstChild);
             }
 
             document.querySelector("#botonSiguiente").style.display = "";
@@ -72,6 +135,7 @@ document.querySelector("#botonSiguiente").onclick = function () {
     }
     return false;
 }
+
 
 /*
 TAREA:
