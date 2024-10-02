@@ -83,20 +83,31 @@ document.querySelector("#botonSiguiente").onclick = function () {
             let br2 = document.createElement("br");
             let input = document.createElement("input");
             let botonAgregar = document.createElement("button");
+            let botonQuitar = document.createElement("button");
+            let inputSueldo = document.createElement("input");
 
-            input.placeholder = `Edad del familiar Nº${i + 1}`;
+            input.placeholder = `Edad del familiar Nº${i+1}`;
             input.id = `edadIntegrante${i+1}`;
-            input.className = "edades"
-            botonAgregar.textContent = "Trabaja"
-            botonAgregar.className = "botonAgregar";
-
+            input.className = "edades";
+            botonAgregar.textContent = "Trabaja";
+            botonQuitar.textContent = "No trabaja";
+            inputSueldo.placeholder = `Sueldo anual del familiar Nº${i+1}`
 
             formEdades.appendChild(input);
             formEdades.appendChild(botonAgregar);
             formEdades.appendChild(br);
             formEdades.appendChild(br2);
+
+            botonAgregar.onclick = function () {
+                botonAgregar.remove();
+                formEdades.insertBefore(inputSueldo, input.nextSibling);
+                formEdades.insertBefore(botonQuitar, inputSueldo.nextSibling);
+                
+                return false;
+            }
         }
         
+
         formEdades.appendChild(botonCalcular);
         formEdades.appendChild(botonReset);
         
@@ -139,7 +150,7 @@ document.querySelector("#botonSiguiente").onclick = function () {
 
             document.querySelector("#botonSiguiente").style.display = "";
             cantidadIntegrantes.disabled = false;
-
+            
             return false;
         }
         
@@ -148,7 +159,6 @@ document.querySelector("#botonSiguiente").onclick = function () {
     }
     return false;
 }
-
 
 
 
