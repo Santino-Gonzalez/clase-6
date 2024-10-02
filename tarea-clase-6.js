@@ -4,6 +4,12 @@ Crear tantos inputs+labels como gente haya para completar la edad de cada integr
 Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad, la menor edad y el promedio del grupo familiar.
 
 Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
+
+TAREA:
+Crear una interfaz que permita agregar ó quitar (botones agregar y quitar) inputs+labels para completar el salario anual de cada integrante de la familia que trabaje.
+Al hacer click en "calcular", mostrar en un elemento pre-existente el mayor salario anual, menor salario anual, salario anual promedio y salario mensual promedio.
+
+Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como 0).
 */
 
 function calcularMayorEdad (edades){
@@ -76,10 +82,17 @@ document.querySelector("#botonSiguiente").onclick = function () {
             let br = document.createElement("br");
             let br2 = document.createElement("br");
             let input = document.createElement("input");
+            let botonAgregar = document.createElement("button");
+
             input.placeholder = `Edad del familiar Nº${i + 1}`;
             input.id = `edadIntegrante${i+1}`;
             input.className = "edades"
+            botonAgregar.textContent = "Trabaja"
+            botonAgregar.className = "botonAgregar";
+
+
             formEdades.appendChild(input);
+            formEdades.appendChild(botonAgregar);
             formEdades.appendChild(br);
             formEdades.appendChild(br2);
         }
@@ -137,10 +150,6 @@ document.querySelector("#botonSiguiente").onclick = function () {
 }
 
 
-/*
-TAREA:
-Crear una interfaz que permita agregar ó quitar (botones agregar y quitar) inputs+labels para completar el salario anual de cada integrante de la familia que trabaje.
-Al hacer click en "calcular", mostrar en un elemento pre-existente el mayor salario anual, menor salario anual, salario anual promedio y salario mensual promedio.
 
-Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como 0).
-*/
+
+
