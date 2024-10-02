@@ -12,55 +12,67 @@ Al hacer click en "calcular", mostrar en un elemento pre-existente el mayor sala
 Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como 0).
 */
 
-function calcularMayorEdad (edades){
+function calcularMayor(valores) {
     let maximo = 0;
 
-    for (let i = 0; i < edades.length; i++) {
+    for (let i = 0; i < valores.length; i++) {
         if (maximo == 0) {
-            maximo = edades[i];
-        } else if (edades[i] > maximo) {
-            maximo = edades[i];
+            maximo = valores[i];
+        } else if (valores[i] > maximo) {
+            maximo = valores[i];
         }
     }
 
     return maximo;
 }
 
-function calcularMenorEdad (edades){
+function calcularMenor(valores) {
     let minimo = 0;
 
-    for (let i = 0; i < edades.length; i++) {
+    for (let i = 0; i < valores.length; i++) {
         if (minimo == 0) {
-            minimo = edades[i];
-        } else if (edades[i] < minimo) {
-            minimo = edades[i];
+            minimo = valores[i];
+        } else if (valores[i] < minimo) {
+            minimo = valores[i];
         }
     }
 
     return minimo;
 }
 
-function calcularEdadPromedio (edades){
+function calcularPromedio(valores) {
     let suma = 0;
 
-    for (let i = 0; i < edades.length; i++) {
-        suma = suma + edades[i];
+    for (let i = 0; i < valores.length; i++) {
+        suma = suma + valores[i];
     }
 
-    return suma / edades.length;
+    return suma / valores.length;
 }
+
+function calcularPromedioSalarioMensual(arraySalariosAnual) {
+    let suma = 0;
+
+    for (let i = 0; i < arraySalariosAnual.length; i++) {
+        suma = suma + arraySalariosAnual[i] / 12;
+    }
+
+    return suma / arraySalariosAnual.length;
+}
+
 
 let cantidadIntegrantes = document.querySelector("#cantidadIntegrantes");
 let formEdades = document.querySelector("#formEdades");
-let resultado = document.querySelector("#resultados");
+let resultadoEdades = document.querySelector("#resultadosEdades");
+let resultadoSalarios = document.querySelector("#resultadosSalarios");
 
 document.querySelector("#botonSiguiente").onclick = function () {
-    
+
     if (cantidadIntegrantes.value > 0) {
-        
+
         document.querySelector("#botonSiguiente").style.display = "none";
         cantidadIntegrantes.disabled = true;
-        
+
         let label = document.createElement("label");
         let br = document.createElement("br");
         let br2 = document.createElement("br");
@@ -73,11 +85,11 @@ document.querySelector("#botonSiguiente").onclick = function () {
         botonCalcular.id = "botonCalcular";
         label.innerHTML = "Ingrese la edad de sus familiares:";
         label.id = "labelEdad";
-        
+
         formEdades.appendChild(label);
         formEdades.appendChild(br);
         formEdades.appendChild(br2);
-        
+
         for (let i = 0; i < cantidadIntegrantes.value; i++) {
             let br = document.createElement("br");
             let br2 = document.createElement("br");
@@ -86,12 +98,13 @@ document.querySelector("#botonSiguiente").onclick = function () {
             let botonQuitar = document.createElement("button");
             let inputSueldo = document.createElement("input");
 
-            input.placeholder = `Edad del familiar Nº${i+1}`;
-            input.id = `edadIntegrante${i+1}`;
+            input.placeholder = `Edad del familiar Nº${i + 1}`;
+            input.id = `edadIntegrante${i + 1}`;
             input.className = "edades";
             botonAgregar.textContent = "Trabaja";
             botonQuitar.textContent = "No trabaja";
-            inputSueldo.placeholder = `Sueldo anual del familiar Nº${i+1}`
+            inputSueldo.className = "salarios";
+            inputSueldo.placeholder = `Sueldo anual familiar Nº${i + 1}`
 
             formEdades.appendChild(input);
             formEdades.appendChild(botonAgregar);
@@ -102,37 +115,60 @@ document.querySelector("#botonSiguiente").onclick = function () {
                 botonAgregar.remove();
                 formEdades.insertBefore(inputSueldo, input.nextSibling);
                 formEdades.insertBefore(botonQuitar, inputSueldo.nextSibling);
-                
+
+                botonQuitar.onclick = function () {
+                    botonQuitar.remove();
+                    inputSueldo.remove();
+                    formEdades.insertBefore(botonAgregar, input.nextSibling);
+                }
+
                 return false;
             }
         }
-        
+
 
         formEdades.appendChild(botonCalcular);
         formEdades.appendChild(botonReset);
-        
+
         document.querySelector("#botonCalcular").onclick = function () {
-        
+
             let edades = document.querySelectorAll(".edades");
+            let salarios = document.querySelectorAll(".salarios");
             let arrayEdades = [];
-        
+            let arraySalarios = [];
+
             for (let i = 0; i < edades.length; i++) {
                 arrayEdades.push(Number(edades[i].value));
+            }
+
+            for (let i = 0; i < salarios.length; i++) {
+                if (salarios[i].value != "") {
+                    arraySalarios.push(Number(salarios[i].value));
+                }
             }
 
             for (let i = 0; i < edades.length; i++) {
                 edades[i].disabled = true;
             }
-        
-            resultado.textContent = `La persona mas mayor de tu familia tiene ${calcularMayorEdad(arrayEdades)} años, 
-            la menor tiene ${calcularMenorEdad(arrayEdades)} años y el promedio de edad de la familia es de ${calcularEdadPromedio(arrayEdades)} años.`;    
-        
+
+            for (let i = 0; i < salarios.length; i++) {
+                salarios[i].disabled = true;
+            }
+
+            resultadoEdades.textContent = `La persona mas mayor de tu familia tiene ${calcularMayor(arrayEdades)} años, 
+            la menor tiene ${calcularMenor(arrayEdades)} años y el promedio de edad de la familia es de ${calcularPromedio(arrayEdades)} años.`;
+
+            resultadoSalarios.textContent = `La persona con mayor salario de tu familia cobra $${calcularMayor(arraySalarios)}, 
+            la que tiene menor salario cobra $${calcularMenor(arraySalarios)}, 
+            el promedio de salario de la familia es $${calcularPromedio(arraySalarios)} 
+            y el promedio de salario mensual de la familia es $${calcularPromedioSalarioMensual(arraySalarios)}`;
+
             botonCalcular.remove();
 
             return false;
         }
-        
-        document.querySelector("#botonReset").onclick = function(){
+
+        document.querySelector("#botonReset").onclick = function () {
 
             label.remove();
             botonCalcular.remove();
@@ -140,7 +176,7 @@ document.querySelector("#botonSiguiente").onclick = function () {
             resultado.textContent = "";
 
             for (let i = 0; i < cantidadIntegrantes.value; i++) {
-                let input = document.getElementById(`edadIntegrante${i+1}`);
+                let input = document.getElementById(`edadIntegrante${i + 1}`);
                 input.remove();
             }
 
@@ -150,11 +186,11 @@ document.querySelector("#botonSiguiente").onclick = function () {
 
             document.querySelector("#botonSiguiente").style.display = "";
             cantidadIntegrantes.disabled = false;
-            
+
             return false;
         }
-        
-    }else{
+
+    } else {
         alert("La cantidad de integrantes de su familia debe ser de al menos 1.");
     }
     return false;
