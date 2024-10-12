@@ -173,7 +173,8 @@ document.querySelector("#botonSiguiente").onclick = function () {
             label.remove();
             botonCalcular.remove();
             botonReset.remove();
-            resultado.textContent = "";
+            resultadoEdades.textContent = "";
+            resultadoSalarios.textContent = "";
 
             for (let i = 0; i < cantidadIntegrantes.value; i++) {
                 let input = document.getElementById(`edadIntegrante${i + 1}`);
